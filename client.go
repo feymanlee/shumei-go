@@ -17,7 +17,7 @@ import (
 
 const (
 	successCode           = 1100
-	defaultTextDetectType = "DEFAULT_FRUAD"
+	defaultTextDetectType = "TEXTRISK"
 )
 
 // 定义地区常量集合
