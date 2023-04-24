@@ -1,4 +1,4 @@
-module github.com/feymanlee/shumei
+module github.com/feymanlee/shumei-go
 
 go 1.18
 
