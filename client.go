@@ -32,9 +32,20 @@ const (
 	RegionIndia         = "yd"      // 印度地区
 )
 
+const (
+	actionTypeText       = "text"
+	actionTypeImage      = "image"
+	actionTypeImageQuery = "image_query"
+	actionTypeAudio      = "audio"
+	actionTypeAudioQuery = "audio_query"
+	actionTypeVideo      = "video"
+	actionTypeVideoQuery = "video_query"
+	actionTypeEvent      = "event"
+)
+
 var regionGatewayMap = map[string]map[string]string{
 	// 文本
-	"text": {
+	actionTypeText: {
 		RegionDefault:   "http://api-text-bj.fengkongcloud.com/text/v4",   // 北京默认
 		RegionBeijing:   "http://api-text-bj.fengkongcloud.com/text/v4",   // 北京
 		RegionShanghai:  "http://api-text-sh.fengkongcloud.com/text/v4",   // 上海
@@ -42,30 +53,30 @@ var regionGatewayMap = map[string]map[string]string{
 		RegionVirginia:  "http://api-text-fjny.fengkongcloud.com/text/v4", // 美国（弗吉尼亚）
 		RegionSingapore: "http://api-text-xjp.fengkongcloud.com/text/v4",  // 新加坡
 	},
-	"image": {
+	actionTypeImage: {
 		RegionDefault:       "http://api-img-bj.fengkongcloud.com/image/v4",  // 北京默认
 		RegionBeijing:       "http://api-img-bj.fengkongcloud.com/image/v4",  // 北京
 		RegionShanghai:      "http://api-img-sh.fengkongcloud.com/image/v4",  // 上海
 		RegionSiliconValley: "http://api-img-gg.fengkongcloud.com/image/v4",  // 硅谷
 		RegionIndia:         "http://api-img-yd.fengkongcloud.com/image/v4",  // 印度
-		"xjp":               "http://api-img-xjp.fengkongcloud.com/image/v4", // 新加坡
+		RegionSingapore:     "http://api-img-xjp.fengkongcloud.com/image/v4", // 新加坡
 	},
-	"image_query": {
+	actionTypeImageQuery: {
 		RegionDefault: "http://api-img-active-query.fengkongcloud.com/v4/image/query", // 北京默认
 		RegionBeijing: "http://api-img-active-query.fengkongcloud.com/v4/image/query", // 北京
 	},
-	"audio": {
+	actionTypeAudio: {
 		RegionDefault:       "http://api-audio-sh.fengkongcloud.com/audio/v4",  // 上海默认
 		RegionShanghai:      "http://api-audio-sh.fengkongcloud.com/audio/v4",  // 上海
 		RegionSiliconValley: "http://api-audio-gg.fengkongcloud.com/audio/v4",  // 硅谷
 		RegionSingapore:     "http://api-audio-xjp.fengkongcloud.com/audio/v4", // 新加坡
 	},
-	"audio_query": {
+	actionTypeAudioQuery: {
 		RegionDefault:       "http://api-audio-sh.fengkongcloud.com/query_audio/v4", // 上海默认
 		RegionShanghai:      "http://api-audio-sh.fengkongcloud.com/query_audio/v4", // 上海
 		RegionSiliconValley: "http://api-audio-gg.fengkongcloud.com/query_audio/v4", // 硅谷
 	},
-	"video": {
+	actionTypeVideo: {
 		RegionDefault:       "http://api-video-bj.fengkongcloud.com/video/v4",  // 北京默认
 		RegionBeijing:       "http://api-video-bj.fengkongcloud.com/video/v4",  // 北京
 		RegionShanghai:      "http://api-video-sh.fengkongcloud.com/video/v4",  // 上海
@@ -73,7 +84,7 @@ var regionGatewayMap = map[string]map[string]string{
 		RegionIndia:         "http://api-video-yd.fengkongcloud.com/video/v4",  // 印度
 		RegionSingapore:     "http://api-video-xjp.fengkongcloud.com/video/v4", // 新加坡
 	},
-	"video_query": {
+	actionTypeVideoQuery: {
 		RegionDefault:       "http://api-video-bj.fengkongcloud.com/video/query/v4",  // 北京默认
 		RegionBeijing:       "http://api-video-bj.fengkongcloud.com/video/query/v4",  // 北京
 		RegionShanghai:      "http://api-video-sh.fengkongcloud.com/video/query/v4",  // 上海
@@ -81,7 +92,7 @@ var regionGatewayMap = map[string]map[string]string{
 		RegionIndia:         "http://api-video-yd.fengkongcloud.com/video/query/v4",  // 印度
 		RegionSingapore:     "http://api-video-xjp.fengkongcloud.com/video/query/v4", // 新加坡
 	},
-	"event": {
+	actionTypeEvent: {
 		RegionDefault:       "http://api-skynet-bj.fengkongcloud.com/v4/event",   // 北京默认
 		RegionBeijing:       "http://api-skynet-bj.fengkongcloud.com/v4/event",   // 北京
 		RegionShanghai:      "http://api-skynet-fjny.fengkongcloud.com/v4/event", // 美国（弗吉尼亚）
@@ -124,14 +135,15 @@ func NewClient(appId, accessKey string, options ...ClientOption) *Client {
 // 返回两个值：
 // *SkyNetEventResp - 结构体指针，包含处理请求后的响应数据
 // error - 如果有错误发生，将返回一个错误对象
-func (c *Client) SkyNetEvent(eventId string, data map[string]any) (*SkyNetEventResp, error) {
-	// 创建一个 SkyNetEventReq 结构体，用于存储请求所需的公共数据和传入的 data 参数
-	reqData := SkyNetEventReq{
-		CommonReq: c.getCommonReq(eventId),
-		Data:      data,
-	}
+func (c *Client) SkyNetEvent(eventId string, req SkyNetEventReq) (*SkyNetEventResp, error) {
 	// 向指定的接口发送请求，并接收响应
-	response, err := c.request("event", reqData)
+	response, err := c.request(actionTypeEvent, struct {
+		CommonReq
+		SkyNetEventReq
+	}{
+		CommonReq:      c.getCommonReq(eventId),
+		SkyNetEventReq: req,
+	})
 	// 如果请求发生错误，返回错误对象
 	if err != nil {
 		return nil, err
@@ -150,15 +162,17 @@ func (c *Client) SkyNetEvent(eventId string, data map[string]any) (*SkyNetEventR
 	return &result, nil
 }
 
-func (c *Client) TextDetect(eventId, detectType string, data map[string]any) (*TextDetectResp, error) {
-	if detectType == "" {
-		detectType = defaultTextDetectType
+func (c *Client) TextDetect(eventId string, req TextDetectReq) (*TextDetectResp, error) {
+	if req.Type == "" {
+		req.Type = defaultTextDetectType
 	}
 	// 向指定的接口发送请求，并接收响应
-	response, err := c.request("text", TextDetectReq{
-		CommonReq: c.getCommonReq(eventId),
-		Type:      detectType,
-		Data:      data,
+	response, err := c.request(actionTypeText, struct {
+		CommonReq
+		TextDetectReq
+	}{
+		CommonReq:     c.getCommonReq(eventId),
+		TextDetectReq: req,
 	})
 	if err != nil {
 		return nil, err
@@ -176,9 +190,10 @@ func (c *Client) TextDetect(eventId, detectType string, data map[string]any) (*T
 	return &result, nil
 }
 
-func (c *Client) ImageDetect() {
-
+func (c *Client) ImageDetect(eventId, detectType string, data map[string]any) (*TextDetectResp, error) {
+	return nil, nil
 }
+
 func (c *Client) AudioDetect() {
 
 }

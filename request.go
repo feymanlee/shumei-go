@@ -20,14 +20,19 @@ type SkyNetEventDataProductReq struct {
 }
 
 type TextDetectReq struct {
-	CommonReq
 	Type string `json:"type"`
 	Data map[string]any
+}
+
+type ImageDetectReq struct {
+	Type         string `json:"type"`
+	BusinessType string `json:"businessType"`
+	Callback     string `json:"callback"`
+	Data         map[string]any
 }
 
 // SkyNetEventReq 数美天网请求
 // See doc：https://help.ishumei.com/docs/tw/marketing/newest/developDoc#data
 type SkyNetEventReq struct {
-	CommonReq
 	Data map[string]any
 }
