@@ -190,7 +190,7 @@ func (c *Client) TextDetect(eventId string, req TextDetectReq) (*TextDetectResp,
 	return &result, nil
 }
 
-func (c *Client) ImageDetect(eventId, detectType string, data map[string]any) (*TextDetectResp, error) {
+func (c *Client) ImageDetect(eventId, detectType string, data map[string]interface{}) (*TextDetectResp, error) {
 	return nil, nil
 }
 

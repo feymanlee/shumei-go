@@ -1,6 +1,6 @@
 module github.com/feymanlee/shumei-go
 
-go 1.18
+go 1.17
 
 require github.com/go-zoox/fetch v1.7.6
 

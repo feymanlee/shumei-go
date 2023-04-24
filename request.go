@@ -20,19 +20,19 @@ type SkyNetEventDataProductReq struct {
 }
 
 type TextDetectReq struct {
-	Type string         `json:"type"`
-	Data map[string]any `json:"data"`
+	Type string                 `json:"type"`
+	Data map[string]interface{} `json:"data"`
 }
 
 type ImageDetectReq struct {
-	Type         string         `json:"type"`
-	BusinessType string         `json:"businessType"`
-	Callback     string         `json:"callback"`
-	Data         map[string]any `json:"data"`
+	Type         string                 `json:"type"`
+	BusinessType string                 `json:"businessType"`
+	Callback     string                 `json:"callback"`
+	Data         map[string]interface{} `json:"data"`
 }
 
 // SkyNetEventReq 数美天网请求
 // See doc：https://help.ishumei.com/docs/tw/marketing/newest/developDoc#data
 type SkyNetEventReq struct {
-	Data map[string]any
+	Data map[string]interface{}
 }
