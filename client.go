@@ -20,61 +20,73 @@ const (
 	defaultTextDetectType = "DEFAULT_FRUAD"
 )
 
+// 定义地区常量集合
+const (
+	RegionDefault       = "default" // 默认地区
+	RegionBeijing       = "bj"      // 北京地区
+	RegionShanghai      = "sh"      // 上海地区
+	RegionGuangzhou     = "gz"      // 广州地区
+	RegionVirginia      = "fjny"    // 弗吉尼亚地区
+	RegionSingapore     = "xjp"     // 新加坡地区
+	RegionSiliconValley = "gg"      // 硅谷地区
+	RegionIndia         = "yd"      // 印度地区
+)
+
 var regionGatewayMap = map[string]map[string]string{
 	// 文本
 	"text": {
-		"default": "http://api-text-bj.fengkongcloud.com/text/v4",   // 北京默认
-		"bj":      "http://api-text-bj.fengkongcloud.com/text/v4",   // 北京
-		"sh":      "http://api-text-sh.fengkongcloud.com/text/v4",   // 上海
-		"gz":      "http://api-text-gz.fengkongcloud.com/text/v4",   // 广州
-		"fjny":    "http://api-text-fjny.fengkongcloud.com/text/v4", // 美国（弗吉尼亚）
-		"xjp":     "http://api-text-xjp.fengkongcloud.com/text/v4",  // 新加坡
+		RegionDefault:   "http://api-text-bj.fengkongcloud.com/text/v4",   // 北京默认
+		RegionBeijing:   "http://api-text-bj.fengkongcloud.com/text/v4",   // 北京
+		RegionShanghai:  "http://api-text-sh.fengkongcloud.com/text/v4",   // 上海
+		RegionGuangzhou: "http://api-text-gz.fengkongcloud.com/text/v4",   // 广州
+		RegionVirginia:  "http://api-text-fjny.fengkongcloud.com/text/v4", // 美国（弗吉尼亚）
+		RegionSingapore: "http://api-text-xjp.fengkongcloud.com/text/v4",  // 新加坡
 	},
 	"image": {
-		"default": "http://api-img-bj.fengkongcloud.com/image/v4",  // 北京默认
-		"bj":      "http://api-img-bj.fengkongcloud.com/image/v4",  // 北京
-		"sh":      "http://api-img-sh.fengkongcloud.com/image/v4",  // 上海
-		"gg":      "http://api-img-gg.fengkongcloud.com/image/v4",  // 硅谷
-		"yd":      "http://api-img-yd.fengkongcloud.com/image/v4",  // 印度
-		"xjp":     "http://api-img-xjp.fengkongcloud.com/image/v4", // 新加坡
+		RegionDefault:       "http://api-img-bj.fengkongcloud.com/image/v4",  // 北京默认
+		RegionBeijing:       "http://api-img-bj.fengkongcloud.com/image/v4",  // 北京
+		RegionShanghai:      "http://api-img-sh.fengkongcloud.com/image/v4",  // 上海
+		RegionSiliconValley: "http://api-img-gg.fengkongcloud.com/image/v4",  // 硅谷
+		RegionIndia:         "http://api-img-yd.fengkongcloud.com/image/v4",  // 印度
+		"xjp":               "http://api-img-xjp.fengkongcloud.com/image/v4", // 新加坡
 	},
 	"image_query": {
-		"default": "http://api-img-active-query.fengkongcloud.com/v4/image/query", // 北京默认
-		"bj":      "http://api-img-active-query.fengkongcloud.com/v4/image/query", // 北京
+		RegionDefault: "http://api-img-active-query.fengkongcloud.com/v4/image/query", // 北京默认
+		RegionBeijing: "http://api-img-active-query.fengkongcloud.com/v4/image/query", // 北京
 	},
 	"audio": {
-		"default": "http://api-audio-sh.fengkongcloud.com/audio/v4",  // 上海默认
-		"sh":      "http://api-audio-sh.fengkongcloud.com/audio/v4",  // 上海
-		"gg":      "http://api-audio-gg.fengkongcloud.com/audio/v4",  // 硅谷
-		"xjp":     "http://api-audio-xjp.fengkongcloud.com/audio/v4", // 新加坡
+		RegionDefault:       "http://api-audio-sh.fengkongcloud.com/audio/v4",  // 上海默认
+		RegionShanghai:      "http://api-audio-sh.fengkongcloud.com/audio/v4",  // 上海
+		RegionSiliconValley: "http://api-audio-gg.fengkongcloud.com/audio/v4",  // 硅谷
+		RegionSingapore:     "http://api-audio-xjp.fengkongcloud.com/audio/v4", // 新加坡
 	},
 	"audio_query": {
-		"default": "http://api-audio-sh.fengkongcloud.com/query_audio/v4", // 上海默认
-		"sh":      "http://api-audio-sh.fengkongcloud.com/query_audio/v4", // 上海
-		"gg":      "http://api-audio-gg.fengkongcloud.com/query_audio/v4", // 硅谷
+		RegionDefault:       "http://api-audio-sh.fengkongcloud.com/query_audio/v4", // 上海默认
+		RegionShanghai:      "http://api-audio-sh.fengkongcloud.com/query_audio/v4", // 上海
+		RegionSiliconValley: "http://api-audio-gg.fengkongcloud.com/query_audio/v4", // 硅谷
 	},
 	"video": {
-		"default": "http://api-video-bj.fengkongcloud.com/video/v4",  // 北京默认
-		"bj":      "http://api-video-bj.fengkongcloud.com/video/v4",  // 北京
-		"sh":      "http://api-video-sh.fengkongcloud.com/video/v4",  // 上海
-		"gg":      "http://api-video-gg.fengkongcloud.com/video/v4",  // 硅谷
-		"yd":      "http://api-video-yd.fengkongcloud.com/video/v4",  // 印度
-		"xjp":     "http://api-video-xjp.fengkongcloud.com/video/v4", // 新加坡
+		RegionDefault:       "http://api-video-bj.fengkongcloud.com/video/v4",  // 北京默认
+		RegionBeijing:       "http://api-video-bj.fengkongcloud.com/video/v4",  // 北京
+		RegionShanghai:      "http://api-video-sh.fengkongcloud.com/video/v4",  // 上海
+		RegionSiliconValley: "http://api-video-gg.fengkongcloud.com/video/v4",  // 硅谷
+		RegionIndia:         "http://api-video-yd.fengkongcloud.com/video/v4",  // 印度
+		RegionSingapore:     "http://api-video-xjp.fengkongcloud.com/video/v4", // 新加坡
 	},
 	"video_query": {
-		"default": "http://api-video-bj.fengkongcloud.com/video/query/v4",  // 北京默认
-		"bj":      "http://api-video-bj.fengkongcloud.com/video/query/v4",  // 北京
-		"sh":      "http://api-video-sh.fengkongcloud.com/video/query/v4",  // 上海
-		"gg":      "http://api-video-gg.fengkongcloud.com/video/query/v4",  // 硅谷
-		"yd":      "http://api-video-yd.fengkongcloud.com/video/query/v4",  // 印度
-		"xjp":     "http://api-video-xjp.fengkongcloud.com/video/query/v4", // 新加坡
+		RegionDefault:       "http://api-video-bj.fengkongcloud.com/video/query/v4",  // 北京默认
+		RegionBeijing:       "http://api-video-bj.fengkongcloud.com/video/query/v4",  // 北京
+		RegionShanghai:      "http://api-video-sh.fengkongcloud.com/video/query/v4",  // 上海
+		RegionSiliconValley: "http://api-video-gg.fengkongcloud.com/video/query/v4",  // 硅谷
+		RegionIndia:         "http://api-video-yd.fengkongcloud.com/video/query/v4",  // 印度
+		RegionSingapore:     "http://api-video-xjp.fengkongcloud.com/video/query/v4", // 新加坡
 	},
 	"event": {
-		"default": "http://api-skynet-bj.fengkongcloud.com/v4/event",   // 北京默认
-		"bj":      "http://api-skynet-bj.fengkongcloud.com/v4/event",   // 北京
-		"sh":      "http://api-skynet-fjny.fengkongcloud.com/v4/event", // 美国（弗吉尼亚）
-		"gg":      "http://api-skynet-xjp.fengkongcloud.com/v4/event",  // 新加坡
-		"yd":      "http://api-skynet-eur.fengkongcloud.com/v4/event",  // 欧洲（法兰克福
+		RegionDefault:       "http://api-skynet-bj.fengkongcloud.com/v4/event",   // 北京默认
+		RegionBeijing:       "http://api-skynet-bj.fengkongcloud.com/v4/event",   // 北京
+		RegionShanghai:      "http://api-skynet-fjny.fengkongcloud.com/v4/event", // 美国（弗吉尼亚）
+		RegionSiliconValley: "http://api-skynet-xjp.fengkongcloud.com/v4/event",  // 新加坡
+		RegionIndia:         "http://api-skynet-eur.fengkongcloud.com/v4/event",  // 欧洲（法兰克福
 	},
 }
 
@@ -90,7 +102,7 @@ func NewClient(appId, accessKey string, options ...ClientOption) *Client {
 	c := &Client{
 		accessKey: accessKey,
 		appId:     appId,
-		region:    "default",
+		region:    RegionDefault,
 		timeout:   time.Second * 3, // 默认超时时间为 3s
 	}
 

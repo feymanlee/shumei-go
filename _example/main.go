@@ -1,10 +1,3 @@
-# shumei-go
-
-数美 go 客户端
-
-## Usage
-
-```go
 package main
 
 import (
@@ -45,4 +38,3 @@ func main() {
 	}
 	log.Println(res)
 }
-```
