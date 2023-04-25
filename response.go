@@ -18,8 +18,8 @@ type CommonResp struct {
 type TextDetectResp struct {
 	CommonResp
 	AllLabels []struct {
-		Probability     int    `json:"probability"`
-		RiskDescription string `json:"riskDescription"`
+		Probability     interface{} `json:"probability"`
+		RiskDescription string      `json:"riskDescription"`
 		RiskDetail      struct {
 		} `json:"riskDetail"`
 		RiskLabel1 string `json:"riskLabel1"`
