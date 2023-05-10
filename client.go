@@ -16,8 +16,12 @@ import (
 )
 
 const (
-	successCode           = 1100
-	defaultTextDetectType = "TEXTRISK"
+	successCode                 = 1100
+	defaultTextDetectType       = "TEXTRISK"
+	defaultImageDetectType      = "POLITY_EROTIC_VIOLENT_QRCODE_ADVERT_IMGTEXTRISK"
+	defaultAudioDetectType      = "POLITY_EROTIC_MOAN_ADVERT"
+	defaultVideoImgDetectType   = "POLITY_EROTIC_VIOLENT_QRCODE_ADVERT_IMGTEXTRISK"
+	defaultVideoAudioDetectType = "POLITICS_PORN_AD_MOAN_ABUSE_ANTHEN_AUDIOPOLITICAL"
 )
 
 // 定义地区常量集合
@@ -36,9 +40,10 @@ const (
 	actionTypeText       = "text"
 	actionTypeImage      = "image"
 	actionTypeImageQuery = "image_query"
-	actionTypeAudio      = "audio"
+	actionTypeAudioSync  = "audio_sync"
+	actionTypeAudioAsync = "audio_async"
 	actionTypeAudioQuery = "audio_query"
-	actionTypeVideo      = "video"
+	actionTypeVideoAsync = "video_async"
 	actionTypeVideoQuery = "video_query"
 	actionTypeEvent      = "event"
 )
@@ -65,7 +70,11 @@ var regionGatewayMap = map[string]map[string]string{
 		RegionDefault: "http://api-img-active-query.fengkongcloud.com/v4/image/query", // 北京默认
 		RegionBeijing: "http://api-img-active-query.fengkongcloud.com/v4/image/query", // 北京
 	},
-	actionTypeAudio: {
+	actionTypeAudioSync: {
+		RegionDefault:  "http://api-audio-sh.fengkongcloud.com/audiomessage/v4", // 上海默认
+		RegionShanghai: "http://api-audio-sh.fengkongcloud.com/audiomessage/v4", // 上海
+	},
+	actionTypeAudioAsync: {
 		RegionDefault:       "http://api-audio-sh.fengkongcloud.com/audio/v4",  // 上海默认
 		RegionShanghai:      "http://api-audio-sh.fengkongcloud.com/audio/v4",  // 上海
 		RegionSiliconValley: "http://api-audio-gg.fengkongcloud.com/audio/v4",  // 硅谷
@@ -76,7 +85,7 @@ var regionGatewayMap = map[string]map[string]string{
 		RegionShanghai:      "http://api-audio-sh.fengkongcloud.com/query_audio/v4", // 上海
 		RegionSiliconValley: "http://api-audio-gg.fengkongcloud.com/query_audio/v4", // 硅谷
 	},
-	actionTypeVideo: {
+	actionTypeVideoAsync: {
 		RegionDefault:       "http://api-video-bj.fengkongcloud.com/video/v4",  // 北京默认
 		RegionBeijing:       "http://api-video-bj.fengkongcloud.com/video/v4",  // 北京
 		RegionShanghai:      "http://api-video-sh.fengkongcloud.com/video/v4",  // 上海
@@ -141,8 +150,8 @@ func (c *Client) SkyNetEvent(eventId string, req SkyNetEventReq) (*SkyNetEventRe
 		CommonReq
 		SkyNetEventReq
 	}{
-		CommonReq:      c.getCommonReq(eventId),
-		SkyNetEventReq: req,
+		c.getCommonReq(eventId),
+		req,
 	})
 	// 如果请求发生错误，返回错误对象
 	if err != nil {
@@ -171,8 +180,8 @@ func (c *Client) TextDetect(eventId string, req TextDetectReq) (*TextDetectResp,
 		CommonReq
 		TextDetectReq
 	}{
-		CommonReq:     c.getCommonReq(eventId),
-		TextDetectReq: req,
+		c.getCommonReq(eventId),
+		req,
 	})
 	if err != nil {
 		return nil, err
@@ -190,15 +199,119 @@ func (c *Client) TextDetect(eventId string, req TextDetectReq) (*TextDetectResp,
 	return &result, nil
 }
 
-func (c *Client) ImageDetect(eventId, detectType string, data map[string]interface{}) (*TextDetectResp, error) {
-	return nil, nil
+func (c *Client) ImageDetect(eventId string, req ImageDetectReq) (*ImageDetectResp, error) {
+	if req.Type == "" {
+		req.Type = defaultImageDetectType
+	}
+	// 向指定的接口发送请求，并接收响应
+	response, err := c.request(actionTypeImage, struct {
+		CommonReq
+		ImageDetectReq
+	}{
+		c.getCommonReq(eventId),
+		req,
+	})
+	if err != nil {
+		return nil, err
+	}
+	result := ImageDetectResp{}
+	// 将收到的 JSON 响应解析到 result 结构体中
+	if err = response.UnmarshalJSON(&result); err != nil {
+		return nil, err
+	}
+	// 检查响应代码，如果不是预期的 successCode，返回错误信息
+	if result.Code != successCode {
+		return nil, errors.New(fmt.Sprintf("image detect request failed, code[%v],message[%s]", result.Code, result.Message))
+	}
+	// 如果一切正常，返回 result 结构体指针和空的错误对象
+	return &result, nil
 }
 
-func (c *Client) AudioDetect() {
-
+func (c *Client) AudioSyncDetect(eventId string, req AudioSyncDetectReq) (*AudioSyncDetectResp, error) {
+	if req.Type == "" {
+		req.Type = defaultAudioDetectType
+	}
+	// 向指定的接口发送请求，并接收响应
+	response, err := c.request(actionTypeAudioSync, struct {
+		CommonReq
+		AudioSyncDetectReq
+	}{
+		c.getCommonReq(eventId),
+		req,
+	})
+	if err != nil {
+		return nil, err
+	}
+	result := AudioSyncDetectResp{}
+	// 将收到的 JSON 响应解析到 result 结构体中
+	if err = response.UnmarshalJSON(&result); err != nil {
+		return nil, err
+	}
+	// 检查响应代码，如果不是预期的 successCode，返回错误信息
+	if result.Code != successCode {
+		return nil, errors.New(fmt.Sprintf("audio sync detect request failed, code[%v],message[%s]", result.Code, result.Message))
+	}
+	// 如果一切正常，返回 result 结构体指针和空的错误对象
+	return &result, nil
 }
-func (c *Client) VideoDetect() {
 
+func (c *Client) AudioAsyncDetect(eventId string, req AudioAsyncDetectReq) (*AudioAsyncDetectResp, error) {
+	if req.Type == "" {
+		req.Type = defaultAudioDetectType
+	}
+	// 向指定的接口发送请求，并接收响应
+	response, err := c.request(actionTypeAudioAsync, struct {
+		CommonReq
+		AudioAsyncDetectReq
+	}{
+		c.getCommonReq(eventId),
+		req,
+	})
+	if err != nil {
+		return nil, err
+	}
+	result := AudioAsyncDetectResp{}
+	// 将收到的 JSON 响应解析到 result 结构体中
+	if err = response.UnmarshalJSON(&result); err != nil {
+		return nil, err
+	}
+	// 检查响应代码，如果不是预期的 successCode，返回错误信息
+	if result.Code != successCode {
+		return nil, errors.New(fmt.Sprintf("audio async detect request failed, code[%v],message[%s]", result.Code, result.Message))
+	}
+	// 如果一切正常，返回 result 结构体指针和空的错误对象
+	return &result, nil
+}
+
+func (c *Client) VideoAsyncDetect(eventId string, req VideoAsyncDetectReq) (*VideoAsyncDetectResp, error) {
+	if req.ImgType == "" {
+		req.ImgType = defaultVideoImgDetectType
+	}
+	if req.AudioType == "" {
+		req.AudioType = defaultVideoAudioDetectType
+	}
+	// 向指定的接口发送请求，并接收响应
+	response, err := c.request(actionTypeVideoAsync, struct {
+		CommonReq
+		VideoAsyncDetectReq
+	}{
+		c.getCommonReq(eventId),
+		req,
+	})
+	if err != nil {
+		return nil, err
+	}
+	result := VideoAsyncDetectResp{}
+	// 将收到的 JSON 响应解析到 result 结构体中
+	if err = response.UnmarshalJSON(&result); err != nil {
+		return nil, err
+	}
+	// 检查响应代码，如果不是预期的 successCode，返回错误信息
+	if result.Code != successCode {
+		return nil, errors.New(fmt.Sprintf("video async detect request failed, code[%v],message[%s]", result.Code, result.Message))
+	}
+	// 如果一切正常，返回 result 结构体指针和空的错误对象
+	return &result, nil
 }
 
 func (c *Client) AccessKey() string {

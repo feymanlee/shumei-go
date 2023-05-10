@@ -108,6 +108,54 @@ type ImageDetectResp struct {
 	} `json:"tokenLabels"`
 }
 
+type AudioSyncDetectResp struct {
+	Code      int    `json:"code"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	BtID      string `json:"btId"`
+	Detail    struct {
+		AudioDetail []struct {
+			RequestID       string `json:"requestId"`
+			AudioStarttime  int    `json:"audioStarttime"`
+			AudioEndtime    int    `json:"audioEndtime"`
+			AudioURL        string `json:"audioUrl"`
+			RiskLevel       string `json:"riskLevel"`
+			RiskLabel1      string `json:"riskLabel1"`
+			RiskLabel2      string `json:"riskLabel2"`
+			RiskLabel3      string `json:"riskLabel3"`
+			RiskDescription string `json:"riskDescription"`
+			RiskDetail      struct {
+				AudioText string `json:"audioText"`
+			} `json:"riskDetail"`
+		} `json:"audioDetail"`
+		AudioTags struct {
+		} `json:"audioTags"`
+		AudioText     string `json:"audioText"`
+		AudioTime     int    `json:"audioTime"`
+		Code          int    `json:"code"`
+		RequestParams struct {
+			Channel       string `json:"channel"`
+			Lang          string `json:"lang"`
+			ReturnAllText int    `json:"returnAllText"`
+			TokenID       string `json:"tokenId"`
+		} `json:"requestParams"`
+		RiskLevel string `json:"riskLevel"`
+	} `json:"detail"`
+}
+
+type AudioAsyncDetectResp struct {
+	Code      int    `json:"code"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+}
+
+type VideoAsyncDetectResp struct {
+	Code      int    `json:"code"`
+	Message   string `json:"message"`
+	RequestID string `json:"requestId"`
+	BtId      string `json:"btId"`
+}
+
 // SkyNetEventResp 天网响应
 // See doc：https://help.ishumei.com/docs/tw/marketing/newest/developDoc#%E5%90%8C%E6%AD%A5%E8%BF%94%E5%9B%9E%E7%A4%BA%E4%BE%8B%EF%BC%9A
 type SkyNetEventResp struct {
