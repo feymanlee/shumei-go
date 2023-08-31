@@ -165,7 +165,7 @@ func (c *Client) SkyNetEvent(eventId string, req SkyNetEventReq) (*SkyNetEventRe
 	}
 	// 检查响应代码，如果不是预期的 successCode，返回错误信息
 	if result.Code != successCode {
-		return nil, errors.New(fmt.Sprintf("sky net event request failed, code[%v],message[%s]", result.Code, result.Message))
+		return nil, errors.New(fmt.Sprintf("sky net event request failed, code[%v],message[%s],reqiestid[%s]", result.Code, result.Message, result.RequestID))
 	}
 	// 如果一切正常，返回 result 结构体指针和空的错误对象
 	return &result, nil
@@ -193,7 +193,7 @@ func (c *Client) TextDetect(eventId string, req TextDetectReq) (*TextDetectResp,
 	}
 	// 检查响应代码，如果不是预期的 successCode，返回错误信息
 	if result.Code != successCode {
-		return nil, errors.New(fmt.Sprintf("text detect request failed, code[%v],message[%s]", result.Code, result.Message))
+		return nil, errors.New(fmt.Sprintf("text detect request failed, code[%v], message[%s], reqiestid[%s]", result.Code, result.Message, result.RequestID))
 	}
 	// 如果一切正常，返回 result 结构体指针和空的错误对象
 	return &result, nil
@@ -221,7 +221,7 @@ func (c *Client) ImageDetect(eventId string, req ImageDetectReq) (*ImageDetectRe
 	}
 	// 检查响应代码，如果不是预期的 successCode，返回错误信息
 	if result.Code != successCode {
-		return nil, errors.New(fmt.Sprintf("image detect request failed, code[%v],message[%s]", result.Code, result.Message))
+		return nil, errors.New(fmt.Sprintf("image detect request failed, code[%v],message[%s], reqiestid[%s]", result.Code, result.Message, result.RequestID))
 	}
 	// 如果一切正常，返回 result 结构体指针和空的错误对象
 	return &result, nil
@@ -249,7 +249,7 @@ func (c *Client) AudioSyncDetect(eventId string, req AudioSyncDetectReq) (*Audio
 	}
 	// 检查响应代码，如果不是预期的 successCode，返回错误信息
 	if result.Code != successCode {
-		return nil, errors.New(fmt.Sprintf("audio sync detect request failed, code[%v],message[%s]", result.Code, result.Message))
+		return nil, errors.New(fmt.Sprintf("audio sync detect request failed, code[%v],message[%s], reqiestid[%s]", result.Code, result.Message, result.RequestID))
 	}
 	// 如果一切正常，返回 result 结构体指针和空的错误对象
 	return &result, nil
@@ -277,7 +277,7 @@ func (c *Client) AudioAsyncDetect(eventId string, req AudioAsyncDetectReq) (*Aud
 	}
 	// 检查响应代码，如果不是预期的 successCode，返回错误信息
 	if result.Code != successCode {
-		return nil, errors.New(fmt.Sprintf("audio async detect request failed, code[%v],message[%s]", result.Code, result.Message))
+		return nil, errors.New(fmt.Sprintf("audio async detect request failed, code[%v], message[%s], reqiestid[%s]", result.Code, result.Message, result.RequestID))
 	}
 	// 如果一切正常，返回 result 结构体指针和空的错误对象
 	return &result, nil
@@ -308,7 +308,7 @@ func (c *Client) VideoAsyncDetect(eventId string, req VideoAsyncDetectReq) (*Vid
 	}
 	// 检查响应代码，如果不是预期的 successCode，返回错误信息
 	if result.Code != successCode {
-		return nil, errors.New(fmt.Sprintf("video async detect request failed, code[%v],message[%s]", result.Code, result.Message))
+		return nil, errors.New(fmt.Sprintf("video async detect request failed, code[%v], message[%s], reqiestid[%s]", result.Code, result.Message, result.RequestID))
 	}
 	// 如果一切正常，返回 result 结构体指针和空的错误对象
 	return &result, nil
