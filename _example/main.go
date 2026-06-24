@@ -2,17 +2,19 @@ package main
 
 import (
 	"log"
+	"os"
 	"time"
 
 	"github.com/feymanlee/shumei-go"
 )
 
-const (
-	appId = "CalfVR"
-	Ac    = "J6Zx8A5UFj9IDkuwZmC5"
-)
-
 func main() {
+	appID := os.Getenv("SHUMEI_APP_ID")
+	accessKey := os.Getenv("SHUMEI_ACCESS_KEY")
+	if appID == "" || accessKey == "" {
+		log.Fatal("SHUMEI_APP_ID and SHUMEI_ACCESS_KEY are required")
+	}
+
 	// Region 可选项：
 	// RegionDefault 默认地区
 	// RegionBeijing 北京地区
@@ -22,10 +24,14 @@ func main() {
 	// RegionSingapore 新加坡地区
 	// RegionSiliconValley 硅谷地区
 	// RegionIndia 印度地区
-	// client := shumei.NewClient("Your App ID", "Your Access Key", shumei.WithRegion(shumei.RegionDefault), shumei.WithTimeout(time.Second*5))
-	client := shumei.NewClient(appId, Ac, shumei.WithRegion(shumei.RegionDefault), shumei.WithTimeout(time.Second*5))
+	// RegionFrankfurt 欧洲（法兰克福）地区
+	// client, err := shumei.NewClient("Your App ID", "Your Access Key", shumei.WithRegion(shumei.RegionDefault), shumei.WithTimeout(time.Second*5))
+	client, err := shumei.NewClient(appID, accessKey, shumei.WithRegion(shumei.RegionDefault), shumei.WithTimeout(time.Second*5))
+	if err != nil {
+		log.Fatal(err)
+	}
 	// 文本检测
-	res, err := client.TextDetect("CalfVR_video_chat", shumei.TextDetectReq{
+	res, err := client.TextDetect("Your EventId", shumei.TextDetectReq{
 		Data: map[string]interface{}{
 			"text":     "加个好友吧 qq12345",
 			"tokenId":  "4567898765jhgfdsa",

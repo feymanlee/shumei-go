@@ -13,7 +13,7 @@ import "time"
 type ClientOption func(*Client) error
 
 // WithTimeout is a Client option that allows you to override the default timeout duration of requests
-// for the Client. The default is 30 seconds. If you are overriding the http Client as well, just include
+// for the Client. The default is 3 seconds. If you are overriding the http Client as well, just include
 // the timeout there.
 func WithTimeout(timeout time.Duration) ClientOption {
 	return func(c *Client) error {
@@ -22,15 +22,23 @@ func WithTimeout(timeout time.Duration) ClientOption {
 	}
 }
 
-//
 // WithRegion
-//  @Description:
-//  @param region
-//  @return ClientOption
 //
+//	@Description:
+//	@param region
+//	@return ClientOption
 func WithRegion(region string) ClientOption {
 	return func(c *Client) error {
 		c.region = region
+		return nil
+	}
+}
+
+// WithDefaultRegionFallback controls whether unsupported region/action pairs
+// should fall back to the action's RegionDefault endpoint.
+func WithDefaultRegionFallback(enabled bool) ClientOption {
+	return func(c *Client) error {
+		c.useDefaultRegionFallback = enabled
 		return nil
 	}
 }
